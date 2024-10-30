@@ -22,7 +22,7 @@
                        
                     </li>
                     <li class="nav-item">
-                    <RouterLink to="/crew" class="bar">02 Crew</RouterLink>
+                    <RouterLink to="/crew" class="bar">02 Crews</RouterLink>
                        
                     </li>
                     <li class="nav-item">
