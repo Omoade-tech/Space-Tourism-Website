@@ -1,124 +1,207 @@
 <template>
-  <div class="container-fluid" v-if="filteredTechnology.length > 0">
+  <div class="container-fluid">
     <h1>03 SPACE LAUNCH 101</h1>
 
     <div
       class="row align-items-center mb-4"
-      v-for="x in filteredTechnology"
-      :key="x.id"
+      v-for="tech in filteredTechnology"
+      :key="tech.name"
     >
       <!-- Content (Left) -->
       <div class="content col-md-6">
-        <h2>{{ x.name }}</h2>
-        <p>{{ x.description }}</p>
+        <h2>{{ tech.name }}</h2>
+        <p>{{ tech.description }}</p>
       </div>
 
       <!-- Image (Right) -->
       <div class="image col-md-6 d-flex justify-content-end">
         <img 
-          :src="x.images.portrait" 
+          :src="tech.images.portrait" 
           alt="technology-image" 
           class="img-fluid"
         />
       </div>
     </div>
-  </div>
-  <div v-else>
-    <p>Loading all technology...</p>
-  </div>
 
-  <!-- Buttons Row -->
-  <div class="btn-tech d-flex mb-4">
-    <button 
-      @click="filterTechnology('Launch vehicle')" 
-      class="btn me-2" 
-      :class="{'active': activeTechnology === 'Launch vehicle'}"
-    >
-      1
-    </button>
-    <button 
-      @click="filterTechnology('Spaceport')" 
-      class="btn me-2" 
-      :class="{'active': activeTechnology === 'Spaceport'}"
-    >
-      2
-    </button>
-    <button 
-      @click="filterTechnology('Space capsule')" 
-      class="btn me-2" 
-      :class="{'active': activeTechnology === 'Space capsule'}"
-    >
-      3
-    </button>
+    <!-- Buttons Row -->
+    <div class="btn-tech d-flex mb-4">
+      <button 
+        v-for="(tech, index) in technology" 
+        :key="tech.name" 
+        @click="filterTechnology(tech.name)" 
+        class="btn me-2" 
+        :class="{'active': activeTechnology === tech.name}"
+      >
+        {{ index + 1 }}
+      </button>
+    </div>
   </div>
-
 </template>
 
 <script>
+import data from '../../Data/data.json'
+
 export default {
   data() {
     return {
-      technology: [],
-      filteredTechnology: [],
+      technology: data.technology,
+      filteredTechnology: [data.technology[0]],
       activeTechnology: 'Launch vehicle'
-    };
-  },
-  mounted() {
-    fetch("http://localhost:3000/technology")
-      .then((response) => response.json())
-      .then((data) => {
-        this.technology = data;
-        this.filterTechnology(this.activeTechnology); // Initial filter
-      })
-      .catch((error) => console.log(error.message));
+    }
   },
   methods: {
     filterTechnology(type) {
-      this.activeTechnology = type;
-      this.filteredTechnology = this.technology.filter(
-        (tech) => tech.name === type
-      );
+      const selectedTechnology = this.technology.find(
+        tech => tech.name === type
+      )
+      if (selectedTechnology) {
+        this.filteredTechnology = [selectedTechnology]
+        this.activeTechnology = type
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
-/* Add any custom styles here */
-.container-fluid{
-
-background-image: url('./src/assets/crew/background-crew-desktop.jpg');
-background-size: cover;
+.container-fluid {
+  background-image: url('@/assets/technology/background-technology-desktop.jpg');
+  background-size: cover;
   color: #ffffff;
-  height: 125vh;
+  height: 100vh;
   margin: 0;
   width: 100%;
+  padding: 2rem;
 }
-h1{
-  padding-top: 90px;
-  padding-left: 100px;
+
+h1 {
+  padding-top: 2rem;
+  font-size: 2.5rem;
 }
-.content{
-  padding-left: 200px;
-  
+
+.row {
+  margin-bottom: 2rem;
 }
-.btn-tech{
-  flex-direction:column;
-  width: 5%;
-  margin-top: -450px;
-  margin-left: 6rem;
-  color:#ffffff;
+
+.content {
+  padding: 2rem;
 }
+
+.image {
+  padding: 2rem;
+}
+
+.btn-tech {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
 button {
-  color:black;
-  background-color: #ffffff;
-  margin-left: 20px;
-  margin-bottom: 1.5rem;
-  height: 40%;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
 }
-img{
-  margin-right: 40px;
-  padding-bottom:50px;
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+button.active {
+  background-color: #ffffff;
+  color: #0b0d17;
+}
+
+@media screen and (max-width: 768px) {
+  .container-fluid {
+    height: auto;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  h1 {
+    padding-top: 1rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .content {
+    padding: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .image {
+    padding: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .btn-tech {
+    position: static;
+    margin-top: 2rem;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  button {
+    width: 40px;
+    height: 40px;
+    margin: 0.5rem;
+  }
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .btn-tech {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  button {
+    width: 35px;
+    height: 35px;
+    margin: 0.25rem;
+  }
+
+  .content {
+    padding: 0.5rem;
+  }
+
+  .image {
+    padding: 0.5rem;
+  }
+
+  img {
+    max-width: 250px;
+  }
 }
 </style>

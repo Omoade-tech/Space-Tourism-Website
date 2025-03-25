@@ -1,36 +1,17 @@
 <template>
   <div class="container-fluid">
-    <h1 >01 Pick Your Destination</h1>
+    <h1>01 Pick Your Destination</h1>
 
     <!-- Buttons Row -->
     <div class="btn-moon d-flex justify-content-end">
       <button 
-        @click="filterDestination('Moon')" 
+        v-for="destination in destinations" 
+        :key="destination.name" 
+        @click="filterDestination(destination.name)" 
         class="btn" 
-        :class="{'active': activeDestination === 'Moon'}"
+        :class="{'active': activeDestination === destination.name}"
       >
-        Moon
-      </button>
-      <button 
-        @click="filterDestination('Mars')" 
-        class="btn " 
-        :class="{'active': activeDestination === 'Mars'}"
-      >
-        Mars
-      </button>
-      <button 
-        @click="filterDestination('Europa')" 
-        class="btn" 
-        :class="{'active': activeDestination === 'Europa'}"
-      >
-        Europa
-      </button>
-      <button 
-        @click="filterDestination('Titan')" 
-        class="btn " 
-        :class="{'active': activeDestination === 'Titan'}"
-      >
-        Titan
+        {{ destination.name }}
       </button>
     </div>
 
@@ -42,7 +23,7 @@
       </div>
 
       <!-- Content Column (right) -->
-      <div class="content col-md-6" >
+      <div class="content col-md-6">
         <div v-if="filteredDestination">
           <h2>{{ filteredDestination.name }}</h2>
           <p>{{ filteredDestination.description }}</p>
@@ -58,47 +39,38 @@
 </template>
 
 <script>
+import data from '../../Data/data.json'
+
 export default {
   data() {
     return {
-      destinations: [], // All destination data
-      filteredDestination: null, // Selected destination data
-      activeDestination: 'Moon', // Set Moon as the default active button
-    };
-  },
-  mounted() {
-    // Fetch destinations data from the API
-    fetch("http://localhost:3000/destinations")
-      .then((response) => response.json())
-      .then((data) => {
-        this.destinations = data;
-        // Automatically show Moon's data on load
-        this.filterDestination('Moon');
-      })
-      .catch((error) => console.log(error.message));
+      destinations: data.destinations,
+      filteredDestination: data.destinations[0],
+      activeDestination: 'Moon'
+    }
   },
   methods: {
-    // Filter destination based on the selected name
     filterDestination(destinationName) {
-      this.filteredDestination = this.destinations.find(
-        (destination) => destination.name === destinationName
-      );
-      // Update the active button
-      this.activeDestination = destinationName;
-    },
-  },
-};
+      const selectedDestination = this.destinations.find(
+        destination => destination.name === destinationName
+      )
+      if (selectedDestination) {
+        this.filteredDestination = selectedDestination
+        this.activeDestination = destinationName
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
-.container-fluid{
-
-  background-image: url('./src/assets/destination/background-destination-desktop.jpg');
+.container-fluid {
+  background-image: url('@/assets/destination/background-destination-desktop.jpg');
   background-size: cover;
-    color: #ffffff;
-    height: 120vh;
-    margin: 0;
-    width: 100%;
+  color: #ffffff;
+  height: 120vh;
+  margin: 0;
+  width: 100%;
 }
 button{
   color:#ffffff;

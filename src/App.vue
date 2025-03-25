@@ -7,7 +7,7 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <div id="app">
     <NavBar></NavBar>
-    <Destination></Destination>
+    <!-- <Destination></Destination> -->
   </div>
 </template>
 

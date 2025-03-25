@@ -6,7 +6,7 @@
             <a class="navbar-brand" href="#">
                 <img src="C:\Users\Adedoyin Sodiq\Desktop\c_VUE\Space_Tourism_Website\src\assets\home\Logo.png" alt="Logo" width="50" height="50">
             </a>
-            <div class="line-breaker"></div>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon" style="background-color: aliceblue;"></span>
             </button>
@@ -66,19 +66,6 @@
         right: 20px;
     }
 }
-/* @media screen and (min-width: 426px) and (max-width:768px) {
-    .navbar-nav{
-        width: 50%;
-    
-        position: absolute;
-        right: -240px;
-    }
-   
-    .navbar-toggler{
 
-        position: absolute;
-        right: 20px;
-    }
-} */
 
 </style>
